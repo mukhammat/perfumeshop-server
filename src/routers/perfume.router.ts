@@ -2,12 +2,10 @@ import { Router } from "express";
 
 const router = Router();
 
-import { Perfume } from "../controllers";
+import { create, getAll, getOne } from "../controllers/perfume";
 
-router.get("/get-all", Perfume.getAll);
-router.get("get-one/:id", Perfume.getOne);
-router.post("/create");
-router.put("/update/:id");
-router.delete("/delete/:id");
+router.get("/get-all", getAll);
+router.get("get-one/:id", getOne);
+router.post("/create", create);
 
 export default router;
