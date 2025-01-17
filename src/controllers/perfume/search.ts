@@ -16,8 +16,20 @@ export const search = asyncWrapper(async (req: Request, res: Response) => {
             OR: [
                 { name: { contains: query, mode: "insensitive" } },
                 { description: { contains: query, mode: "insensitive" } },
-                { analogs: { has: query } },
+                {
+                    analogs: {
+                        some: {
+                            name: {
+                                contains: query,
+                                mode: "insensitive",
+                            },
+                        },
+                    },
+                },
             ],
+        },
+        include: {
+            analogs: true, // Включаем аналоги в результат
         },
     });
 
