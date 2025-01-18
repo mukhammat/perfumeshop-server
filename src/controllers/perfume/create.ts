@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import asyncWrapper from "../../middleware/async";
 
 export const create = asyncWrapper(async (req: Request, res: Response) => {
-    const { name, perfume_code, price, description, category_id, analogs } =
+    const { name, perfume_code, price, description, category_id, image_path } =
         req.body;
 
     const perfume = await prisma.perfume.findUnique({
@@ -25,7 +25,7 @@ export const create = asyncWrapper(async (req: Request, res: Response) => {
             description,
             price,
             category_id,
-            analogs: analogs,
+            image_path,
         },
     });
     res.status(201).json({ message: "Perfume created" });
