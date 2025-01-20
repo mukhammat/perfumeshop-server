@@ -9,7 +9,7 @@ export const register = asyncWrapper(async (req: Request, res: Response) => {
 
     const hash = await hashPassword(password);
 
-    const user = await prisma.admin.create({
+    const admin = await prisma.admin.create({
         data: {
             name,
             email,
@@ -17,7 +17,7 @@ export const register = asyncWrapper(async (req: Request, res: Response) => {
         }
     });
 
-    const jwt = jwtGenerate({id: user.id,name: user.name, email: user.email});
+    const jwt = jwtGenerate({id: admin.id,name: admin.name, email: admin.email});
 
     res.status(201).json({token: jwt});
 })
