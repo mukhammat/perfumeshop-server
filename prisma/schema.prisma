@@ -12,23 +12,18 @@ model Perfume {
   name      String
   perfume_code String @unique
   description String?
-  price     Float
+  price_30ml     Float
+  price_50ml     Float
   image_path String?
   category  Category @relation(fields: [category_id], references: [id])
   category_id Int
-  analogs     Analog[]   @relation("PerfumeAnalog") // Связь с аналогами
+  analog      String@unique
 }
 
 model Category {
   id      Int      @id @default(autoincrement())
   name    String  @unique
   perfumes Perfume[]
-}
-
-model Analog{
-  id      Int      @id @default(autoincrement())
-  name    String  @unique
-  perfumes Perfume[] @relation("PerfumeAnalog") // Связь с парфюмами
 }
 
 model Admin {
