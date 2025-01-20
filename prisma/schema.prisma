@@ -30,3 +30,13 @@ model Analog{
   name    String  @unique
   perfumes Perfume[] @relation("PerfumeAnalog") // Связь с парфюмами
 }
+
+model Admin {
+  id            Int      @id @default(autoincrement())
+  name          String   @db.VarChar(20)
+  email         String   @unique @db.VarChar(255)
+  password      String   @db.VarChar(255)
+  is_superadmin Boolean  @default(false)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+}
