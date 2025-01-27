@@ -1,15 +1,15 @@
-import prisma from "../../../databases/prisma";
+import prisma from "../../config/prisma";
 import { Request, Response } from "express";
-import asyncWrapper from "../../../middleware/async";
-import { hashPassword } from '../../../helpers/hash.helper';
-import { jwtGenerate } from '../../../helpers/jwt.helper';
+import asyncWrapper from "../../middleware/async.middleware";
+import { hashPassword } from '../../utils/hash';
+import { jwtGenerate } from '../../utils/jwt';
 
 export const register = asyncWrapper(async (req: Request, res: Response) => {
     const {name, email, password} = req.body;
 
     const hash = await hashPassword(password);
 
-    const admin = await prisma.admin.create({
+    const admin = await prisma.user.create({
         data: {
             name,
             email,

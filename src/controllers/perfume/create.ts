@@ -1,6 +1,6 @@
-import prisma from "../../databases/prisma";
+import prisma from "../../config/prisma";
 import { Request, Response } from "express";
-import asyncWrapper from "../../middleware/async";
+import asyncWrapper from "../../middleware/async.middleware";
 
 export const create = asyncWrapper(async (req: Request, res: Response) => {
     const { name, perfume_code, price, description, category_id, image_path, analog } =
@@ -23,7 +23,8 @@ export const create = asyncWrapper(async (req: Request, res: Response) => {
             name,
             perfume_code,
             description,
-            price,
+            price_30ml: price,
+            price_50ml: price * 1.5,
             category_id,
             image_path,
             analog

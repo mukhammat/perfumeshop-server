@@ -1,6 +1,6 @@
-import prisma from "../../databases/prisma";
+import prisma from "../../config/prisma";
 import { Request, Response } from "express";
-import asyncWrapper from "../../middleware/async";
+import asyncWrapper from "../../middleware/async.middleware";
 
 export const getAll = asyncWrapper(async (req: Request, res: Response) => {
     const perfumes = await prisma.perfume.findMany();

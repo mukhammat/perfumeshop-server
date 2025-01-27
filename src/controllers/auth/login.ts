@@ -1,14 +1,14 @@
-import prisma from "../../../databases/prisma";
+import prisma from "../../config/prisma";
 import { Request, Response } from "express";
-import asyncWrapper from "../../../middleware/async";
-import { comparePassword } from '../../../helpers/hash.helper';
-import { jwtGenerate } from '../../../helpers/jwt.helper';
+import asyncWrapper from "../../middleware/async.middleware";
+import { comparePassword } from '../../utils/hash';
+import { jwtGenerate } from '../../utils/jwt';
 
 
 export const login = asyncWrapper(async (req: Request, res: Response) => {
     const {email, password} = req.body;
 
-    const admin = await prisma.admin.findUnique({
+    const admin = await prisma.user.findUnique({
         where: {
           email
         }

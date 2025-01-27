@@ -1,8 +1,4 @@
-import jwt from "jsonwebtoken";
-
-interface JwtPayload {
-    [key: string]: any;
-}
+import jwt, {JwtPayload} from "jsonwebtoken";
 
 const secretKey = process.env.SECRET_KEY || "secretKey";
 

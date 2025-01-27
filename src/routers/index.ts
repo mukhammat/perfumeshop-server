@@ -1,5 +1,5 @@
 import { Router } from "express";
-import errorHanler from "../middleware/error-handler";
+import errorHanler from "../middleware/error-handler.middleware";
 
 const router = Router();
 
