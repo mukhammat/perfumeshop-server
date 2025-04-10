@@ -1,14 +1,15 @@
 import express from "express";
 import router from "./routers";
 import cors from "cors";
+import { config } from "dotenv"; config();
 
 const app = express();
-const port = 3000;
+const {HOST, PORT} = process.env;
 
 app.use(express.json());
 app.use(cors());
-app.use("/api", router);
+app.use(router);
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+app.listen(PORT, () => {
+    console.log(`App listening at ${HOST}:${PORT}`);
 });

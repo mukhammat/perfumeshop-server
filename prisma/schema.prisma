@@ -7,31 +7,50 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Image {
+  id         Int     @id @default(autoincrement())
+  image_path String  @unique
+  perfume    Perfume @relation(fields: [perfume_id], references: [id])
+  perfume_id Int
+}
+
 model Perfume {
-  id        Int      @id @default(autoincrement())
-  name      String
-  perfume_code String @unique
-  description String?
-  price_30ml     Float
-  price_50ml     Float
-  image_path String?
-  category  Category @relation(fields: [category_id], references: [id])
-  category_id Int
-  analog      String@unique
+  id                  Int               @id @default(autoincrement())
+  name                String
+  perfume_code        String            @unique
+  description         String?
+  analog              String            @unique
+  custom_price_per_ml Float
+  price_30ml          Float?
+  price_50ml          Float?
+  top_note            String
+  middle_note         String
+  base_note           String
+  images              Image[]
+  CategoryPerfume     CategoryPerfume[]
 }
 
 model Category {
-  id      Int      @id @default(autoincrement())
-  name    String  @unique
-  perfumes Perfume[]
+  id              Int               @id @default(autoincrement())
+  name            String            @unique
+  CategoryPerfume CategoryPerfume[]
+}
+
+model CategoryPerfume {
+  category    Category @relation(fields: [category_id], references: [id])
+  category_id Int
+  perfume     Perfume  @relation(fields: [perfume_id], references: [id])
+  perfume_id  Int
+
+  @@id([category_id, perfume_id])
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  name          String   @db.VarChar(20)
-  email         String   @unique @db.VarChar(255)
-  password      String   @db.VarChar(255)
-  is_admin Boolean  @default(false)
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(20)
+  email      String   @unique @db.VarChar(255)
+  password   String   @db.VarChar(255)
+  is_admin   Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
