@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { IPerfumeController } from "./perfume.controller";
+import { validate } from "../../common/middleware/validate.middleware"
+import { searchSchema } from "./perfume.schema"
 
 export class PerfumeRouter {
   private readonly router;
@@ -11,7 +13,10 @@ export class PerfumeRouter {
     this.router.route("/create").post(this.perfumeController.create.bind(this.perfumeController));
     this.router.route("/get-all").get(this.perfumeController.getAll.bind(this.perfumeController));
     this.router.route("/get-one/:id").get(this.perfumeController.getOne.bind(this.perfumeController));
-    this.router.route("/search").get(this.perfumeController.search.bind(this.perfumeController));
+    this.router.get(
+      "/search",
+      validate(searchSchema, "query"),
+      this.perfumeController.search.bind(this.perfumeController));
     this.router.route("/get-by-category/:category_id").get(this.perfumeController.getByCategory.bind(this.perfumeController));
     return this.router;
   }

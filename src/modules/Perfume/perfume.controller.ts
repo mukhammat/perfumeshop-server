@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { IPerfumeService } from "./perfume.service";
+import { SearchSchemaType } from "./perfume.schema"
 
 export interface IPerfumeController {
     create(req: Request, res: Response, next: NextFunction): Promise<void>;
@@ -57,16 +58,10 @@ export class PerfumeController implements IPerfumeController {
 
     async search(req: Request, res: Response, next: NextFunction) {
         try {
-            const { query } = req.query;
+            const {q, priceFrom, priceTo, sort, volume, analog } = res.locals.validateData as SearchSchemaType;
 
-            if (!query || typeof query !== "string") {
-                res.status(400).json({
-                    message: "Query parameter 'q' is required and must be a string",
-                });
-                return;
-            }
-            const perfumes = await this.perfumeService.search(query);
-    
+            const perfumes = await this.perfumeService.search(q);
+            
             res.json(perfumes);
         } catch (error) {
             next(error);

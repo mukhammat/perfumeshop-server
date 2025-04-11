@@ -1,28 +1,22 @@
-import { ZodSchema, ZodError } from 'zod';
 import { Request, Response, NextFunction } from 'express';
-
-// Расширяем интерфейс Request
-declare global {
-  namespace Express {
-    interface Request {
-      validated: unknown;
-    }
-  }
-}
+import { z, ZodError } from 'zod';
 
 type ZodRequestParts = 'body' | 'query' | 'params';
 
-export const validate = 
-  <T>(schema: ZodSchema<T>, part: ZodRequestParts = 'body') =>
-  (req: Request, res: Response, next: NextFunction) => {
+export function validate(schema: z.ZodObject<any, any>, part: ZodRequestParts = 'body') {
+  return (req: Request, res: Response, next: NextFunction) => {
     try {
-      const result = schema.parse(req[part]);
-      req.validated = result as T;
+      res.locals.validateData = schema.parse(req[part]);
       next();
-    } catch (err) {
-      if (err instanceof ZodError) {
-        return res.status(400).json({ errors: err.errors });
+    } catch (error) {
+      if (error instanceof ZodError) {
+      const errorMessages = error.errors.map((issue: any) => ({
+            message: `${issue.path.join('.')} is ${issue.message}`,
+        }))
+        res.status(400).json({ error: 'Invalid data', details: errorMessages });
+      } else {
+        res.status(500).json({ error: 'Internal Server Error' });
       }
-      next(err);
     }
   };
+}

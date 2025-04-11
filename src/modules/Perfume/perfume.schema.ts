@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const perfumeSearchSchema = z.object({
+export const searchSchema = z.object({
   q: z.string().min(1, "Поисковый запрос обязателен"),
   priceFrom: z
     .string()
@@ -30,3 +30,6 @@ export const perfumeSearchSchema = z.object({
       message: "sort должен быть 'price' или 'alphabet'",
     }),
 });
+
+
+export type SearchSchemaType = z.infer<typeof searchSchema>;
