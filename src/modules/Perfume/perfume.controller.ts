@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { IPerfumeService } from "./perfume.service";
-import { SearchSchemaType } from "./perfume.schema"
 
 export interface IPerfumeController {
     create(req: Request, res: Response, next: NextFunction): Promise<void>;
@@ -58,10 +57,7 @@ export class PerfumeController implements IPerfumeController {
 
     async search(req: Request, res: Response, next: NextFunction) {
         try {
-            const {q, priceFrom, priceTo, sort, volume, analog } = res.locals.validateData as SearchSchemaType;
-
-            const perfumes = await this.perfumeService.search(q);
-            
+            const perfumes = await this.perfumeService.search(res.locals.validatedData);
             res.json(perfumes);
         } catch (error) {
             next(error);

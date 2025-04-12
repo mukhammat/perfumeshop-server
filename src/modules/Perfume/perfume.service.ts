@@ -1,4 +1,5 @@
 import { PrismaClient, Prisma, Perfume } from "@prisma/client";
+import { SearchSchemaType } from "./perfume.schema";
 
 type PerfumeWithoutCurrentPrice =  Omit<Perfume, "custom_price_per_ml">;
 
@@ -6,7 +7,7 @@ export interface IPerfumeService {
     create(data: Prisma.PerfumeCreateManyInput):Promise<unknown>;
     getOne(id: number): Promise<PerfumeWithoutCurrentPrice | null>;
     getAll(where?: Prisma.PerfumeWhereInput): Promise<PerfumeWithoutCurrentPrice[]>;
-    search(query: string): Promise<PerfumeWithoutCurrentPrice[]>;
+    search(params: SearchSchemaType): Promise<PerfumeWithoutCurrentPrice[]>;
 }
 
 const selectPerfumesData = {
@@ -51,16 +52,36 @@ export class PerfumeService {
         });
     }
 
-    async search(query: string) {
+    async search(params: SearchSchemaType) {
+        const { q, priceFrom, priceTo, sort, analog } = params;
+        const orderBy = this.getSortOption(sort);
+
         return await this.prisma.perfume.findMany({
             where: {
                 OR: [
-                    { name: { contains: query, mode: "insensitive" } },
-                    { description: { contains: query, mode: "insensitive" } },
-                    { analog: { contains: query, mode: "insensitive" } },
+                    { name: { contains: q, mode: "insensitive" } },
+                    { description: { contains: q, mode: "insensitive" } },
+                    { analog: { contains: q, mode: "insensitive" } },
+                ],
+                AND: [
+                    priceFrom ? { price_50ml: { gte: Number(priceFrom) } } : {},
+                    priceTo ? { price_50ml: { lte: Number(priceTo) } } : {},
+                    analog ? { analog: { contains: analog, mode: "insensitive" } } : {}
                 ],
             },
+            orderBy,
             select: selectPerfumesData
         });
+    }
+
+    private getSortOption(sort?: string): Prisma.PerfumeOrderByWithRelationInput {
+        if (!sort) return {};
+        
+        const [field, direction] = sort.split('_');
+        if (!field || !direction) return {};
+
+        return {
+            [field]: direction.toLowerCase() as 'asc' | 'desc'
+        };
     }
 }

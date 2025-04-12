@@ -3,10 +3,13 @@ import { z, ZodError } from 'zod';
 
 type ZodRequestParts = 'body' | 'query' | 'params';
 
-export function validate(schema: z.ZodObject<any, any>, part: ZodRequestParts = 'body') {
+export function validate<T extends z.ZodType>(
+  schema: T,
+  part: ZodRequestParts = 'body'
+) {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
-      res.locals.validateData = schema.parse(req[part]);
+      res.locals.validatedData = schema.parse(req[part]);
       next();
     } catch (error) {
       if (error instanceof ZodError) {

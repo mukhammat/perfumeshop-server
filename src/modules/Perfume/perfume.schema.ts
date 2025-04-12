@@ -14,12 +14,6 @@ export const searchSchema = z.object({
     .refine(val => !val || !isNaN(Number(val)), {
       message: "priceTo должен быть числом",
     }),
-  volume: z
-    .number()
-    .optional()
-    .refine(val => !val || [30, 50].includes(val), {
-      message: "Объем должен быть 30 или 50 мл",
-    }),
   analog: z
     .string()
     .optional(),
