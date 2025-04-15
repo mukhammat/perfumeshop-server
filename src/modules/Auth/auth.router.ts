@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { IAuthController } from "./auth.controller";
+import { IAuthController } from ".";
 
 export class AuthRouter {
   private readonly router;

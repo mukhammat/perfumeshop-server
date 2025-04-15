@@ -1,5 +1,5 @@
 import { PrismaClient, Prisma, Perfume } from "@prisma/client";
-import { SearchSchemaType } from "./perfume.schema";
+import { SearchSchemaType } from ".";
 
 type PerfumeWithoutCurrentPrice =  Omit<Perfume, "custom_price_per_ml">;
 

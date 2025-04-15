@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { IReviewService } from "./review.service";
+import { IReviewService } from ".";
 
 export interface IReviewController {
     create(req: Request, res: Response, next: NextFunction): Promise<void>;

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { IAuthService } from "./auth.service";
+import { IAuthService } from ".";
 
 export interface IAuthController {
     login(req: Request, res: Response, next: NextFunction): Promise<void>;

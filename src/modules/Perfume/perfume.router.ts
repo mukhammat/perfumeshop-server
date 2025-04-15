@@ -1,7 +1,6 @@
 import { Router } from "express";
-import { IPerfumeController } from "./perfume.controller";
-import { validate } from "../../common/middleware/validate.middleware"
-import { searchSchema } from "./perfume.schema"
+import { IPerfumeController, searchSchema } from ".";
+import { validate } from "../../common/middleware";
 
 export class PerfumeRouter {
   private readonly router;

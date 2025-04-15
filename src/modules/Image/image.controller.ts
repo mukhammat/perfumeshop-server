@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { IImageService } from "./image.service";
+import { IImageService } from ".";
 
 export interface IImageController {
     create(req: Request, res: Response, next: NextFunction): Promise<void>

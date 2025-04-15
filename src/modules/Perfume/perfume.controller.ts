@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { IPerfumeService } from "./perfume.service";
+import { IPerfumeService } from ".";
 
 export interface IPerfumeController {
     create(req: Request, res: Response, next: NextFunction): Promise<void>;

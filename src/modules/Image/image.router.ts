@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { IImageController } from "./image.controller";
+import { IImageController } from ".";
 
 export class ImageRouter {
   private readonly router;

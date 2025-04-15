@@ -1,8 +1,6 @@
 import { Router } from "express";
-import { IReviewController } from "./review.controller";
-import { validate } from "../../common/middleware/validate.middleware"
-import { authorize } from "../../common/middleware/authorize.middleware"
-import { createSchema } from "./review.schema"
+import { IReviewController, createSchema } from ".";
+import { validate, authorize } from "../../common/middleware"
 
 export class ReviewRouter {
   private readonly router;

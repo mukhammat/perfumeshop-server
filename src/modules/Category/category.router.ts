@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { ICategoryController } from "./category.controller";
-import { authorize } from "../../common/middleware/authorize.middleware";
+import { ICategoryController } from ".";
+import { authorize } from "../../common/middleware";
 
 export class CategoryRouter {
     private readonly router;

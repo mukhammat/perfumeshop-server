@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ICategoryService } from "./category.service";
+import { ICategoryService } from ".";
 
 export interface ICategoryController {
     create(req: Request, res: Response, next: NextFunction): Promise<void>;

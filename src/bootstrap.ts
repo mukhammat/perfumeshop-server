@@ -4,9 +4,7 @@ import { PerfumeService, PerfumeController, PerfumeRouter } from './modules/Perf
 import { CategoryService, CategoryController, CategoryRouter } from './modules/Category';
 import { ImageService, ImageController, ImageRouter } from './modules/Image';
 import { UserService, UserController, UserRouter } from './modules/User';
-import { ReviewService } from './modules/Review/review.service';
-import { ReviewController } from './modules/Review/review.controller';
-import { ReviewRouter } from './modules/Review/review.router';
+import { ReviewService, ReviewController, ReviewRouter } from './modules/Review';
 
 export default {
     createAuth: () => {

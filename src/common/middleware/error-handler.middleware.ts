@@ -1,6 +1,6 @@
 import { ErrorRequestHandler } from "express";
-import { isHttpError } from "http-errors";
 import { Prisma } from "@prisma/client";
+import { HttpException } from "../exceptions";
 
 /**
  * Централизованный обработчик ошибок для приложения Express.
@@ -10,7 +10,7 @@ const errorHanler: ErrorRequestHandler = (error, req, res, next) => {
     let status = 500;
     let errorMessage = "Internal server error";
 
-    if (isHttpError(error)) {
+    if (error instanceof HttpException) {
         status = error.status;
         errorMessage = error.message;
     }
