@@ -9,12 +9,14 @@ const perfumeRouter = bootsrap.createPerfume().init();
 const categoryRouter = bootsrap.createCategory().init();
 const imageRouter = bootsrap.createImage().init();
 const userRouter = bootsrap.createUser().init();
+const reviewRouter = bootsrap.createReview().init();
 
 router.use("/api/category", categoryRouter);
 router.use("/api/auth", authRouter);
 router.use("/api/perfume", perfumeRouter);
 router.use("/api/image", imageRouter);
 router.use("/api/user", userRouter);
+router.use("/api/review", reviewRouter);
 
 router.use(errorHanler);
 router.use((req, res) => {

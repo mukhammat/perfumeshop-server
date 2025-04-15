@@ -28,6 +28,7 @@ model Perfume {
   base_note           String
   images              Image[]
   CategoryPerfume     CategoryPerfume[]
+  reviews Review[]
 }
 
 model Category {
@@ -53,4 +54,18 @@ model User {
   is_admin   Boolean  @default(false)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  reviews Review[]
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  perfumeId  Int
+  text       String
+  rating     Int
+  createdAt  DateTime @default(now())
+
+  // Связи с другими моделями (если они есть)
+  user       User     @relation(fields: [userId], references: [id])
+  perfume    Perfume  @relation(fields: [perfumeId], references: [id])
 }

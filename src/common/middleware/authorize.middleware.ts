@@ -21,7 +21,7 @@ export const authorize = (req: Request, res: Response, next: NextFunction) => {
             return;
         }
         const decode = jwt.verify(token,secretKey);
-        req.body.user = decode;
+        res.locals.user = decode;
         next();
     } catch (error) {
         res.status(401).json({ message: 'No access' });

@@ -4,6 +4,9 @@ import { PerfumeService, PerfumeController, PerfumeRouter } from './modules/Perf
 import { CategoryService, CategoryController, CategoryRouter } from './modules/Category';
 import { ImageService, ImageController, ImageRouter } from './modules/Image';
 import { UserService, UserController, UserRouter } from './modules/User';
+import { ReviewService } from './modules/Review/review.service';
+import { ReviewController } from './modules/Review/review.controller';
+import { ReviewRouter } from './modules/Review/review.router';
 
 export default {
     createAuth: () => {
@@ -39,5 +42,11 @@ export default {
         const userService = new UserService(prisma);
         const userController = new UserController(userService);
         return new UserRouter(userController);
+    },
+    createReview: () => {
+        console.log("Bootsrap User")
+        const reviewService = new ReviewService(prisma);
+        const reviewController = new ReviewController(reviewService);
+        return new ReviewRouter(reviewController);
     }
 } 
