@@ -37,7 +37,7 @@ export default {
         return new UserController(userService);
     },
     createReview: () => {
-        console.log("Bootsrap User")
+        console.log("Bootsrap Review")
         const reviewService = new ReviewService(prisma);
         return new ReviewController(reviewService);
     }
