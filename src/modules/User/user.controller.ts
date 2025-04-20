@@ -6,7 +6,7 @@ export interface IUserController {
     router: Router;
 }
 
-export class UserController {
+export class UserController implements IUserController {
     public readonly router;
     constructor(private userService: UserService) {
         this.router = Router();
