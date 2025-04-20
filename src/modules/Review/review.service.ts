@@ -1,6 +1,5 @@
 import { PrismaClient, Prisma, Review } from "@prisma/client";
 import { NotFoundException } from "../../common/exceptions"
-import { BadRequestError } from "routing-controllers";
 
 export interface IReviewService {
     create(data: Prisma.ReviewUncheckedCreateInput): Promise<Review>;
@@ -21,7 +20,7 @@ export class ReviewService implements IReviewService {
     }
 
     async create(data: Prisma.ReviewUncheckedCreateInput) {
-        const perfumeId = data.perfumeId;
+        const perfumeId = data.perfume_id;
         
         console.log("Check if perfume exists service");
         await this.hasPerfume(perfumeId);
@@ -42,15 +41,15 @@ export class ReviewService implements IReviewService {
                 id: reviewId
             }, select: {
             id: true,
-            perfumeId: true,
-            userId: true,
+            perfume_id: true,
+            user_id: true,
         } });
 
         if (!hasReview) {
             throw new NotFoundException(`Review with id ${reviewId} not found`);
         }
 
-        if(userId !== hasReview?.userId) {
+        if(userId !== hasReview?.user_id) {
             throw new NotFoundException(`Review with id ${reviewId} not found`);
         }
         
@@ -63,8 +62,8 @@ export class ReviewService implements IReviewService {
         await this.hasPerfume(perfumeId);
         console.log(`Get reviews by perfume id ${perfumeId}  service`);
         return this.prisma.review.findMany({ 
-            where: { perfumeId },
-            orderBy: { createdAt: "desc" }, 
+            where: { perfume_id: perfumeId },
+            orderBy: { created_at: "desc" }, 
         });
     }
 }

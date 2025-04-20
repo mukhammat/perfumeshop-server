@@ -23,7 +23,7 @@ export class ReviewController implements IReviewController {
         try {
             const { perfumeId, rating, text } = req.body;
             const userId = res.locals.user.id;
-            const review = await this.reviewService.create({ perfumeId, userId, rating, text });
+            const review = await this.reviewService.create({ perfume_id: perfumeId, user_id: userId, rating, text });
             res.status(201).json(review);
         } catch (error) {
             next(error);

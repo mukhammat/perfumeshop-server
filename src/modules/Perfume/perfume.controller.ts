@@ -14,14 +14,14 @@ export class PerfumeController implements IPerfumeController {
     }
 
     private routes() {
-            this.router.route("/create").post(this.create.bind(this));
-            this.router.route("/get-all").get(this.getAll.bind(this));
-            this.router.route("/get-one/:id").get(this.getOne.bind(this));
-            this.router.get(
-              "/search",
-              validate(searchSchema, "query"),
-              this.search.bind(this));
-            this.router.route("/get-by-category/:category_id").get(this.getByCategory.bind(this));
+        this.router.route("/create").post(this.create.bind(this));
+        this.router.route("/get-all").get(this.getAll.bind(this));
+        this.router.route("/get-one/:id").get(this.getOne.bind(this));
+        this.router.get(
+            "/search",
+            validate(searchSchema, "query"),
+            this.search.bind(this));
+        this.router.route("/get-by-category/:category_id").get(this.getByCategory.bind(this));
     }
 
     private async create(req: Request, res: Response, next: NextFunction) {

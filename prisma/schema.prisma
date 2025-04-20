@@ -29,6 +29,7 @@ model Perfume {
   images              Image[]
   CategoryPerfume     CategoryPerfume[]
   reviews Review[]
+  order_items         OrderItem[]
 }
 
 model Category {
@@ -55,17 +56,92 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   reviews Review[]
+  orders     Order[]
 }
 
 model Review {
   id         Int      @id @default(autoincrement())
-  userId     Int
-  perfumeId  Int
+  user_id     Int
+  perfume_id  Int
   text       String
   rating     Int
-  createdAt  DateTime @default(now())
+  created_at  DateTime @default(now())
 
   // Связи с другими моделями (если они есть)
-  user       User     @relation(fields: [userId], references: [id])
-  perfume    Perfume  @relation(fields: [perfumeId], references: [id])
+  user       User     @relation(fields: [user_id], references: [id])
+  perfume    Perfume  @relation(fields: [perfume_id], references: [id])
+}
+
+model Order {
+  id                 Int           @id @default(autoincrement())
+  address            String        
+  country            String?
+  city               String?
+  phone              String
+  delivery_price     Decimal       
+  order_price        Decimal
+  total_price        Decimal
+  payment_method     String?       
+  paid_at            DateTime?
+  tracking_number    String?
+  delivery_method    String?
+  expected_delivery  DateTime?
+  notes              String?       
+  status             OrderStatus   @default(pending)
+  user_id            Int
+  user               User          @relation(fields: [user_id], references: [id])
+  items              OrderItem[]
+  statusHistory      OrderStatusHistory[]
+  payments           Payment[]
+  created_at         DateTime      @default(now())
+  updated_at         DateTime      @updatedAt
+}
+
+model OrderItem {
+  id          Int       @id @default(autoincrement())
+  volume_in_ml      Int
+  quantity    Int
+  price       Decimal
+  discount    Int       @default(0)
+  total_price Decimal
+  order_id     Int
+  perfume_id   Int
+  perfume     Perfume   @relation(fields: [perfume_id], references: [id])
+  order       Order     @relation(fields: [order_id], references: [id])
+}
+
+enum PaymentStatus {
+  unpaid
+  paid
+  refunded
+  partially_refunded
+}
+
+enum OrderStatus {
+  pending
+  processing
+  shipped
+  delivered
+  cancelled
+  returned
+}
+
+model OrderStatusHistory {
+  id        Int         @id @default(autoincrement())
+  order_id   Int
+  status    OrderStatus
+  comment   String?
+  createdAt DateTime    @default(now())
+  order     Order       @relation(fields: [order_id], references: [id])
+}
+
+model Payment {
+  id        Int       @id @default(autoincrement())
+  order_id   Int
+  amount    Decimal
+  method    String
+  status    PaymentStatus
+  paid_at   DateTime?
+  order     Order     @relation(fields: [order_id], references: [id])
+  createdAt DateTime  @default(now())
 }
