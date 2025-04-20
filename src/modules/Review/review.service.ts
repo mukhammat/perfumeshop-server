@@ -3,7 +3,7 @@ import { NotFoundException } from "../../common/exceptions"
 
 export interface IReviewService {
     create(data: Prisma.ReviewUncheckedCreateInput): Promise<Review>;
-    delete(id: number): Promise<Review>;
+    delete(reviewId: number, userId: number): Promise<Review>;
     getManyByPerfumeId(perfumeId: number): Promise<Review[]>;
 }
 
@@ -31,9 +31,9 @@ export class ReviewService implements IReviewService {
         });
     }
 
-    async delete(id: number) {
+    async delete(reviewId: number, userId: number) {
         console.log("Delete review service");
-        return this.prisma.review.delete({ where: { id } });
+        return this.prisma.review.delete({ where: { id: reviewId, userId } });
     }
 
     async getManyByPerfumeId(perfumeId: number) {

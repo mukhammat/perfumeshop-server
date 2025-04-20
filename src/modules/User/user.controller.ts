@@ -1,14 +1,23 @@
-import { NextFunction, Request, Response } from "express";
-import { UserService } from "./user.service";
+import { NextFunction, Request, Response, Router } from "express";
+import { UserService } from ".";
+import { authorize } from "../../common/middleware/authorize.middleware";
 
 export interface IUserController {
-    getInfo(req: Request, res: Response, next: NextFunction): Promise<void>;
+    router: Router;
 }
 
 export class UserController {
-    constructor(private userService: UserService) {}
+    public readonly router;
+    constructor(private userService: UserService) {
+        this.router = Router();
+        this.routes();
+    }
 
-    async getInfo(req: Request, res: Response, next: NextFunction) {
+    private routes() {
+        this.router.get("/me", authorize, this.getInfo.bind(this))
+    }
+
+    private async getInfo(req: Request, res: Response, next: NextFunction) {
         try {
             const id = req.body.user.id;
             const userinfo = await this.userService.getInfo(id);

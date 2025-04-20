@@ -1,17 +1,26 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import { ICategoryService } from ".";
+import { authorize } from "../../common/middleware";
 
 export interface ICategoryController {
-    create(req: Request, res: Response, next: NextFunction): Promise<void>;
-    delete(req: Request, res: Response, next: NextFunction): Promise<void>;
-    update(req: Request, res: Response, next: NextFunction): Promise<void>;
-    getAll(req: Request, res: Response, next: NextFunction): Promise<void>;
+    router: Router
 }
 
 export class CategoryController {
-    constructor(private categoryService: ICategoryService) {}
+    public readonly router;
+    constructor(private categoryService: ICategoryService) {
+        this.router = Router();
+        this.routes();
+    }
 
-    async create(req: Request, res: Response, next: NextFunction) {
+    private routes() {
+            this.router.route("/create").post(authorize, this.create.bind(this));
+            this.router.route("/delete/:id").delete( authorize, this.delete.bind(this));
+            this.router.route("/update").patch(authorize, this.update.bind(this));
+            this.router.route("/get-all").get(this.getAll.bind(this));
+    }
+
+    private async create(req: Request, res: Response, next: NextFunction) {
         try {
             const { name } = req.body;
             const category = await this.categoryService.create(name);
@@ -24,7 +33,7 @@ export class CategoryController {
         }
     }
 
-    async delete(req: Request, res: Response, next: NextFunction) {
+    private async delete(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
             await this.categoryService.delete(Number(id));
@@ -36,7 +45,7 @@ export class CategoryController {
         }
     }
 
-    async update(req: Request, res: Response, next: NextFunction) {
+    private async update(req: Request, res: Response, next: NextFunction) {
         try {
             const { id, name } = req.body;
             await this.categoryService.update(id, name);
@@ -46,7 +55,7 @@ export class CategoryController {
         }
     }
 
-    async getAll(req: Request, res: Response, next: NextFunction) {
+    private async getAll(req: Request, res: Response, next: NextFunction) {
         try {
             const categories = await this.categoryService.getAll();
             res.status(200).json(categories);

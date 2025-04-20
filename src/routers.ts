@@ -4,12 +4,12 @@ import errorHanler from "./common/middleware/error-handler.middleware";
 const router = Router();
 import bootsrap from "./bootstrap";
 
-const authRouter = bootsrap.createAuth().init();
-const perfumeRouter = bootsrap.createPerfume().init();
-const categoryRouter = bootsrap.createCategory().init();
-const imageRouter = bootsrap.createImage().init();
-const userRouter = bootsrap.createUser().init();
-const reviewRouter = bootsrap.createReview().init();
+const authRouter = bootsrap.createAuth().router;
+const perfumeRouter = bootsrap.createPerfume().router;
+const categoryRouter = bootsrap.createCategory().router;
+const imageRouter = bootsrap.createImage().router;
+const userRouter = bootsrap.createUser().router;
+const reviewRouter = bootsrap.createReview().router;
 
 router.use("/api/category", categoryRouter);
 router.use("/api/auth", authRouter);
