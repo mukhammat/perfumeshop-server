@@ -1,5 +1,6 @@
 import { PrismaClient, Prisma, Review } from "@prisma/client";
 import { NotFoundException } from "../../common/exceptions"
+import { BadRequestError } from "routing-controllers";
 
 export interface IReviewService {
     create(data: Prisma.ReviewUncheckedCreateInput): Promise<Review>;
@@ -33,11 +34,34 @@ export class ReviewService implements IReviewService {
 
     async delete(reviewId: number, userId: number) {
         console.log("Delete review service");
-        return this.prisma.review.delete({ where: { id: reviewId, userId } });
+
+        console.log("Check if review exists service");
+        console.log("reviewId:", reviewId);
+        const hasReview = await this.prisma.review.findUnique({ 
+            where: {
+                id: reviewId
+            }, select: {
+            id: true,
+            perfumeId: true,
+            userId: true,
+        } });
+
+        if (!hasReview) {
+            throw new NotFoundException(`Review with id ${reviewId} not found`);
+        }
+
+        if(userId !== hasReview?.userId) {
+            throw new NotFoundException(`Review with id ${reviewId} not found`);
+        }
+        
+        return this.prisma.review.delete({
+            where: { id: hasReview.id },
+        });
     }
 
     async getManyByPerfumeId(perfumeId: number) {
-        console.log("Get reviews by perfume id service");
+        await this.hasPerfume(perfumeId);
+        console.log(`Get reviews by perfume id ${perfumeId}  service`);
         return this.prisma.review.findMany({ 
             where: { perfumeId },
             orderBy: { createdAt: "desc" }, 
