@@ -1,5 +1,5 @@
 import { PrismaClient, Prisma, Review } from "@prisma/client";
-import { NotFoundException } from "../../common/exceptions"
+import { NotFoundException } from "@exceptions"
 
 export interface IReviewService {
     create(data: Prisma.ReviewUncheckedCreateInput): Promise<Review>;

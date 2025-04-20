@@ -1,4 +1,4 @@
-import prisma from './common/config/prisma';
+import { prisma } from '@config';
 import { AuthController, AuthService } from './modules/Auth';
 import { PerfumeService, PerfumeController } from './modules/Perfume';
 import { CategoryService, CategoryController } from './modules/Category';

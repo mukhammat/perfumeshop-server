@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { UserService } from ".";
-import { authorize } from "../../common/middleware/authorize.middleware";
+import { authorize } from "@middleware";
 
 export interface IUserController {
     router: Router;

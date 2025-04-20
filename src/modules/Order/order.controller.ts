@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { IOrderService } from ".";
-import { validate, authorize } from "../../common/middleware"
+import { validate, authorize } from "@middleware"
 
 export interface IOrderController {
     router: Router;

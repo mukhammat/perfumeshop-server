@@ -5,7 +5,7 @@ import { HttpException } from "../exceptions";
 /**
  * Централизованный обработчик ошибок для приложения Express.
  */
-const errorHanler: ErrorRequestHandler = (error, req, res, next) => {
+export const errorHanler: ErrorRequestHandler = (error, req, res, next) => {
     console.log(error);
     let status = 500;
     let errorMessage = "Internal server error";
@@ -40,5 +40,3 @@ const errorHanler: ErrorRequestHandler = (error, req, res, next) => {
         message: errorMessage,
     });
 };
-
-export default errorHanler;

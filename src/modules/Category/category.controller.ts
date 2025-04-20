@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { ICategoryService } from ".";
-import { authorize } from "../../common/middleware";
+import { authorize } from "@middleware";
 
 export interface ICategoryController {
     router: Router

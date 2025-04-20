@@ -4,9 +4,9 @@
     "main": "dist/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node dist/index.js",
-        "dev": "nodemon --exec ts-node src/index.ts",
-        "build": "tsc -p ."
+        "dev": "nodemon --watch ts-node -r tsconfig-paths/register src/index.ts",
+        "start": "node -r tsconfig-paths/register dist/index.js",
+        "build": "tsc -p . && tsc-alias"
     },
     "keywords": [],
     "author": "",
@@ -21,6 +21,7 @@
         "jsonwebtoken": "^9.0.2",
         "reflect-metadata": "^0.2.2",
         "routing-controllers": "^0.11.2",
+        "tsconfig-paths": "^4.2.0",
         "typedi": "^0.10.0",
         "zod": "^3.24.2"
     },
@@ -33,6 +34,7 @@
         "nodemon": "^3.1.9",
         "prisma": "^6.2.1",
         "ts-node": "^10.9.2",
+        "tsc-alias": "^1.8.15",
         "typescript": "^5.7.3"
     }
 }

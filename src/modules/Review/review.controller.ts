@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { IReviewService, createSchema } from ".";
-import { validate, authorize } from "../../common/middleware"
+import { validate, authorize } from "@middleware"
 
 export interface IReviewController {
     router: Router;
