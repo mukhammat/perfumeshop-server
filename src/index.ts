@@ -4,7 +4,8 @@ import cors from "cors";
 import { config } from "dotenv"; config();
 
 const app = express();
-const {HOST, PORT} = process.env;
+const HOST = process.env.HOST || "localhost";
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cors());
