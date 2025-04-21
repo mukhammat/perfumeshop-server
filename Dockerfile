@@ -13,12 +13,14 @@ RUN npm install
 # Копируем остальные файлы проекта
 COPY . .
 
-# Собираем проект (если TypeScript)
+# Генерируем Prisma клиент
 RUN npx prisma generate
+
+# Собираем проект (если TypeScript)
 RUN npm run build
 
 # Открываем порт
 EXPOSE 3000
 
 # Команда запуска
-CMD ["npm", "start"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npm start"]
