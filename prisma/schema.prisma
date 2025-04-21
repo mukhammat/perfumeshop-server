@@ -80,9 +80,6 @@ model Order {
   phone              String
   delivery_price     Decimal       
   order_price        Decimal
-  total_price        Decimal
-  payment_method     String?       
-  paid_at            DateTime?
   tracking_number    String?
   delivery_method    String?
   expected_delivery  DateTime?
@@ -91,7 +88,7 @@ model Order {
   user_id            Int
   user               User          @relation(fields: [user_id], references: [id])
   items              OrderItem[]
-  statusHistory      OrderStatusHistory[]
+  status_history      OrderStatusHistory[]
   payments           Payment[]
   created_at         DateTime      @default(now())
   updated_at         DateTime      @updatedAt
@@ -131,7 +128,7 @@ model OrderStatusHistory {
   order_id   Int
   status    OrderStatus
   comment   String?
-  createdAt DateTime    @default(now())
+  created_at DateTime    @default(now())
   order     Order       @relation(fields: [order_id], references: [id])
 }
 
@@ -143,5 +140,5 @@ model Payment {
   status    PaymentStatus
   paid_at   DateTime?
   order     Order     @relation(fields: [order_id], references: [id])
-  createdAt DateTime  @default(now())
+  created_at DateTime  @default(now())
 }
