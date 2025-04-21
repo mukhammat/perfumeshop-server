@@ -5,6 +5,7 @@ import { CategoryService, CategoryController } from './modules/Category';
 import { ImageService, ImageController } from './modules/Image';
 import { UserService, UserController } from './modules/User';
 import { ReviewService, ReviewController } from './modules/Review';
+import { OrderController, OrderService } from './modules/Order';
 
 export default {
     createAuth: () => {
@@ -40,5 +41,10 @@ export default {
         console.log("Bootsrap Review")
         const reviewService = new ReviewService(prisma);
         return new ReviewController(reviewService);
+    },
+    createOrder: () => {
+        console.log("Bootsrap Order")
+        const orderService = new OrderService(prisma);
+        return new  OrderController(orderService);
     }
 } 

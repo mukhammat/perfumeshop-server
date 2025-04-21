@@ -10,6 +10,7 @@ const categoryRouter = bootsrap.createCategory().router;
 const imageRouter = bootsrap.createImage().router;
 const userRouter = bootsrap.createUser().router;
 const reviewRouter = bootsrap.createReview().router;
+const orderRouter = bootsrap.createOrder().router;
 
 router.use("/api/category", categoryRouter);
 router.use("/api/auth", authRouter);
@@ -17,6 +18,7 @@ router.use("/api/perfume", perfumeRouter);
 router.use("/api/image", imageRouter);
 router.use("/api/user", userRouter);
 router.use("/api/review", reviewRouter);
+router.use("/api/order", orderRouter);
 
 router.use(errorHanler);
 router.use((req, res) => {
