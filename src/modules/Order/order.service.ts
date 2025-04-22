@@ -1,12 +1,9 @@
-import { PrismaClient, Prisma, Order } from "@prisma/client";
+import { PrismaClient, Order } from "@prisma/client";
+import { OrderDTO } from ".";
 
 export interface IOrderService {
     create(rest: OrderDTO): Promise<Order>;
 }
-
-export type OrderDTO = Omit<Prisma.OrderCreateInput, "user"> & {
-    user_id: number;
-};
 
 export class OrderService implements IOrderService {
     constructor(private prisma: PrismaClient) {}
