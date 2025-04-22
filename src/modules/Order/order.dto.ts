@@ -1,10 +1,12 @@
-import { $Enums, Prisma } from "@prisma/client";
+import { $Enums } from "@prisma/client";
 
 export type OrderDTO = {
     address: string
-    country?: string | null
-    city?: string | null
+    country: string
+    city: string
     phone: string
+    latitude?: string      // Широта
+    longitude?: string    // Долгота
     delivery_price: number
     order_price: number
     tracking_number?: string | null
@@ -13,4 +15,12 @@ export type OrderDTO = {
     notes?: string | null
     status?: $Enums.OrderStatus
     user_id: number
+}
+
+export type UpdateOrderDTO = {
+    latitude?: string      // Широта
+    longitude?: string    // Долгота
+    notes?: string | null
+    user_id: number
+    order_id: number
 }

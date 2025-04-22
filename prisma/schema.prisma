@@ -75,9 +75,11 @@ model Review {
 model Order {
   id                 Int           @id @default(autoincrement())
   address            String        
-  country            String?
-  city               String?
+  city               String
+  country            String        @db.VarChar(3) @default("SAU")
   phone              String
+  latitude           Decimal?      // Широта
+  longitude          Decimal?      // Долгота
   delivery_price     Decimal       
   order_price        Decimal
   tracking_number    String?
@@ -92,6 +94,8 @@ model Order {
   payments           Payment[]
   created_at         DateTime      @default(now())
   updated_at         DateTime      @updatedAt
+
+  @@unique([id, user_id])
 }
 
 model OrderItem {

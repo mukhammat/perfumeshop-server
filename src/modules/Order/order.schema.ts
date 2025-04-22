@@ -2,8 +2,8 @@ import { z } from "zod";
 
 export const orderSchema = z.object({
   address: z.string().min(1, "Address is required"),
-  country: z.string().optional(),
-  city: z.string().optional(),
+  country: z.string(),
+  city: z.string(),
   phone: z.string().min(1, "Phone is required"),
   delivery_price: z.number().nonnegative("Delivery price must be a positive number"),
   order_price: z.number().nonnegative("Order price must be a positive number"),
