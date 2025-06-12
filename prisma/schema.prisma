@@ -76,7 +76,7 @@ model Order {
   id                 Int           @id @default(autoincrement())
   address            String        
   city               String
-  country            String        @db.VarChar(3) @default("SAU")
+  country            String        @db.VarChar(3) @default("KAZ")
   phone              String
   latitude           Decimal?      // Широта
   longitude          Decimal?      // Долгота
