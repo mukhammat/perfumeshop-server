@@ -1,5 +1,5 @@
 // exceptions/NotFoundException.ts
-import { HttpException } from "./http.exception";
+import { HttpException } from "./http";
 
 export class NotFoundException extends HttpException {
     constructor(message = "Not Found") {

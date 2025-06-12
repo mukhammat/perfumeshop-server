@@ -1,3 +1,3 @@
-export * from "./http.exception";
-export * from "./not-found.exception";
-export * from "./bad-request.exception"
+export * from "./http";
+export * from "./not-found";
+export * from "./bad-request"

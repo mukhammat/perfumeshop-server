@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { IImageService } from ".";
+import { asyncWrapper, authorize, checkAdmin } from "@middleware";
 
 export interface IImageController {
     router: Router;
@@ -13,38 +14,38 @@ export class ImageController implements IImageController {
     }
 
     private routes() {
-        this.router.route("/create").post(this.create.bind(this));
-        this.router.route("/delete/:id").delete(this.delete.bind(this));
-        this.router.route("/update/:id").patch(this.update.bind(this));
+        this.router
+        .use(authorize)
+        .use(checkAdmin)
+
+        .post("/create", this.create)
+
+        .delete("/delete/:id", this.delete)
+
+        .patch("/update/:id", this.update)
     }
 
-    private async create(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { image_path, perfume_id }:{image_path:string; perfume_id: number;} = req.body;
-            await this.imageService.create({image_path, perfume_id});
-            res.status(201).json({ message: "Image created" });
-        } catch (error: any) {
-            next(error);
-        }
-    }
+    private create = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+        const { image_path, perfume_id }:{image_path:string; perfume_id: number;} = req.body;
 
-    private async delete(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { id } = req.params;
-            await this.imageService.delete(Number(id));
-            res.status(201).json({ message: "Image deleted" });
-        } catch (error: any) {
-            next(error);
-        }
-    }
+        await this.imageService.create({image_path, perfume_id});
 
-    private async update(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { id, image_path } = req.params;
-            await this.imageService.update(Number(id), image_path);
-            res.status(201).json({ message: "Image updated" });
-        } catch (error: any) {
-            next(error);
-        }
-    }
+        res.status(201).json({ message: "Image created" });
+    });
+
+    private delete = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params;
+
+        await this.imageService.delete(Number(id));
+
+        res.status(201).json({ message: "Image deleted" });
+    });
+
+    private update = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+        const { id, image_path } = req.params;
+
+        await this.imageService.update(Number(id), image_path);
+        
+        res.status(201).json({ message: "Image updated" });
+    });
 }

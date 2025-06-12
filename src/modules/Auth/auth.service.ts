@@ -40,7 +40,7 @@ export class AuthService implements IAuthService {
             }
         });
         
-        return this.generateJwt({ id: user.id, name: user.name, email: user.email });
+        return this.generateJwt({ id: user.id, name: user.name, email: user.email, isAdmin: user.is_admin });
     }
 
     public async login(email:string, password:string) {
@@ -60,6 +60,6 @@ export class AuthService implements IAuthService {
             throw new Error("Invalid password");
         }
         
-        return this.generateJwt({id: user.id,name: user.name, email: user.email});
+        return this.generateJwt({id: user.id,name: user.name, email: user.email, isAdmin: user.is_admin});
     }
 }

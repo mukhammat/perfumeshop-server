@@ -14,21 +14,22 @@ export class CategoryController {
     }
 
     private routes() {
-            this.router.route("/create").post(authorize, this.create.bind(this));
-            this.router.route("/delete/:id").delete( authorize, this.delete.bind(this));
-            this.router.route("/update").patch(authorize, this.update.bind(this));
-            this.router.route("/get-all").get(this.getAll.bind(this));
+            this.router
+            .post("/create", authorize, this.create.bind(this))
+            .delete("/delete/:id", authorize, this.delete.bind(this))
+            .patch("/update/:id", authorize, this.update.bind(this))
+            .get("/get-all", this.getAll.bind(this));
     }
 
     private async create(req: Request, res: Response, next: NextFunction) {
         try {
             const { name } = req.body;
-            const category = await this.categoryService.create(name);
+            await this.categoryService.create(name);
             res.status(201).json({
                 message: "Category created",
                 //categoryId: category.id,
             });
-        } catch (error: any) {
+        } catch (error: unknown) {
             next(error)
         }
     }

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { IPerfumeService, searchSchema } from ".";
-import { validate, authorize } from "@middleware"
+import { validate, checkAdmin, authorize, asyncWrapper } from "@middleware"
 
 export interface IPerfumeController {
     router: Router;
@@ -14,79 +14,63 @@ export class PerfumeController implements IPerfumeController {
     }
 
     private routes() {
-        this.router.route("/create").post(this.create.bind(this));
-        this.router.route("/get-all").get(this.getAll.bind(this));
-        this.router.route("/get-one/:id").get(this.getOne.bind(this));
-        this.router.get(
+        this.router
+        .post("/create", authorize, checkAdmin, this.create)
+        .get("/get-all", this.getAll)
+        .get("/get-one/:id", this.getOne)
+
+        .get(
             "/search",
             validate(searchSchema, "query"),
-            this.search.bind(this));
-        this.router.route("/get-by-category/:category_id").get(this.getByCategory.bind(this));
+            this.search
+        )
+
+        .get("/get-by-category/:category_id", this.getByCategory)
     }
 
-    private async create(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { name, perfume_code, custom_price_per_ml, price_30ml, price_50ml,  description, analog, top_note, middle_note, base_note } =
-            req.body;
-            if(!name || !perfume_code || !custom_price_per_ml || !analog) throw Error("ошибка валидаций")
-            console.log("Start create controller");
-            await this.perfumeService.create({
-                name,
-                perfume_code,
-                custom_price_per_ml,
-                price_30ml, price_50ml,
-                description,
-                analog, top_note,
-                middle_note,
-                base_note
-            });
-            console.log("End create controller");
-            res.status(201).json({ message: "Perfume created" });
-        }
-        catch (error: any) {
-            next(error);
-        }
-    }
+    private create = asyncWrapper(async (req: Request, res: Response) => {
+        const { name, perfume_code, custom_price_per_ml, price_30ml, price_50ml,  description, analog, top_note, middle_note, base_note } =
+        req.body;
+        if(!name || !perfume_code || !custom_price_per_ml || !analog) throw Error("ошибка валидаций")
+        console.log("Start create controller");
+        await this.perfumeService.create({
+            name,
+            perfume_code,
+            custom_price_per_ml,
+            price_30ml, price_50ml,
+            description,
+            analog, top_note,
+            middle_note,
+            base_note
+        });
+        console.log("End create controller");
+        res.status(201).json({ message: "Perfume created" });
 
-    private async getAll(req: Request, res: Response, next: NextFunction) {
-        try {
-            const perfumes = await this.perfumeService.getAll();
-            res.json(perfumes);
-        } catch (error: any) {
-            next(error);
-        }
-    }
+    })
 
-    private async getOne(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { id } = req.params;
-            const perfume = await this.perfumeService.getOne(parseInt(id));
-            res.json(perfume);
-        } catch (error: any) {
-            next(error);
-        }
-    }
+    private getAll = asyncWrapper(async (_: unknown, res: Response, next: NextFunction) => {
+        const perfumes = await this.perfumeService.getAll();
+        res.json(perfumes);
+    })
 
-    private async search(req: Request, res: Response, next: NextFunction) {
-        try {
-            const perfumes = await this.perfumeService.search(res.locals.validatedData);
-            res.json(perfumes);
-        } catch (error) {
-            next(error);
-        }
-    }
+    private getOne = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params;
+        const perfume = await this.perfumeService.getOne(parseInt(id));
+        res.json(perfume);
+    })
 
-    private async getByCategory(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { category_id } = req.params;
-            const perfumes = await this.perfumeService.getAll({
-                    CategoryPerfume: {
-                        // Релизовать вывод по категориям !!!!!!!!!!!!!!!!!
-                    }
-                });
-            res.json(perfumes);
-        } catch (error: any) {
-            next(error)
-        }
-    }
+    private search = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+        const perfumes = await this.perfumeService.search(res.locals.validatedData);
+        res.json(perfumes);
+    })
+
+    private getByCategory = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+        const { category_id } = req.params;
+        const perfumes = await this.perfumeService.getAll({
+            CategoryPerfume: {
+                // Релизовать вывод по категориям !!!!!!!!!!!!!!!!!
+            }
+        });
+        res.json(perfumes);
+    })
 }
