@@ -20,7 +20,7 @@
         "express": "^4.21.2",
         "jsonwebtoken": "^9.0.2",
         "reflect-metadata": "^0.2.2",
-        "routing-controllers": "^0.11.2",
+        "routing-controllers": "^0.11.3",
         "tsconfig-paths": "^4.2.0",
         "typedi": "^0.10.0",
         "zod": "^3.24.2"
